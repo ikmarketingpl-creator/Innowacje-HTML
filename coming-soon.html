@@ -423,16 +423,46 @@ canvas#bg {
 })();
 
 function handleNotify(){
-  const val = document.getElementById('emailInput').value.trim();
+  const inp = document.getElementById('emailInput');
+  const btn = document.querySelector('.btn-notify');
+  const val = inp.value.trim();
+
   if(!val || !val.includes('@')){
-    const inp = document.getElementById('emailInput');
     inp.style.borderColor = '#ef4444';
     setTimeout(() => inp.style.borderColor = '', 1200);
     return;
   }
-  document.getElementById('formWrap').style.display = 'none';
-  const msg = document.getElementById('successMsg');
-  msg.style.display = 'inline-flex';
+
+  // Stan ładowania
+  btn.disabled = true;
+  const originalBtnText = btn.textContent;
+  btn.textContent = 'Wysyłanie...';
+  inp.disabled = true;
+
+  fetch('mail.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: val, message: 'Zgłoszenie ze strony Coming Soon' })
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.ok) {
+      document.getElementById('formWrap').style.display = 'none';
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'inline-flex';
+    } else {
+      alert(res.error || (res.errors ? res.errors.join('\n') : 'Wystąpił błąd. Spróbuj ponownie.'));
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
+      inp.disabled = false;
+    }
+  })
+  .catch(() => {
+    alert('Błąd połączenia. Sprawdź internet lub spróbuj później.');
+    btn.disabled = false;
+    btn.textContent = originalBtnText;
+    inp.disabled = false;
+  });
 }
 
 document.getElementById('emailInput').addEventListener('keydown', e => {
