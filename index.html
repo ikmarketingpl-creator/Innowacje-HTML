@@ -219,6 +219,19 @@ nav.scrolled {
 .skill-chip svg { width:13px; height:13px; color:var(--accent); flex-shrink:0; }
 .skill-chip:hover { background:rgba(0,180,216,.07); border-color:rgba(0,180,216,.3); color:var(--brand); }
 
+.expert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+.expert-card { background: var(--slate-50); padding: 2rem; border-radius: 24px; border: 1px solid var(--slate-200); display: flex; flex-direction: column; gap: 1rem; transition: all 0.3s ease; }
+.expert-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: var(--accent); }
+.expert-card h3 { font-family: var(--font-h); font-weight: 800; font-size: 1.25rem; color: var(--brand); margin-bottom: 0.25rem; }
+.expert-card .headline { font-family: var(--font); font-weight: 600; font-size: 0.9rem; color: var(--accent); line-height: 1.4; font-style: italic; }
+.expert-card p { font-size: 0.9rem; color: var(--slate-600); line-height: 1.6; }
+.expert-card .power { margin-top: 0.5rem; }
+.expert-card .power strong { color: var(--brand); display: block; margin-bottom: 0.25rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+@media(max-width:900px){
+  .expert-grid { grid-template-columns: 1fr; }
+}
+
 /* ── SZKOLENIA ── */
 #szkolenia { padding:2.5rem 0; background:var(--brand); color:var(--white); position:relative; overflow:hidden; }
 .sz-grid-bg { position:absolute; inset:0; background-image:linear-gradient(rgba(0,180,216,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.04) 1px,transparent 1px); background-size:60px 60px; pointer-events:none; }
@@ -402,10 +415,10 @@ footer { background:var(--white); border-top:1px solid var(--slate-200); padding
       <span class="nav-logo-text">Sieć <span>Innowacji</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="#o-mnie">O mnie</a></li>
+      <li><a href="#o-nas-team">O nas</a></li>
       <li><a href="#szkolenia">Szkolenia</a></li>
       <li><a href="#najblizsze">Najbliższe</a></li>
-      <li><a href="#o-nas">Misja</a></li>
+      <li><a href="#metoda">Nasza Metoda</a></li>
       <li><a href="#hub">Hub</a></li>
     </ul>
     <a href="#kontakt" class="btn-nav">Już wkrótce</a>
@@ -413,10 +426,10 @@ footer { background:var(--white); border-top:1px solid var(--slate-200); padding
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#o-mnie" onclick="closeMobile()">O mnie</a>
+  <a href="#o-nas-team" onclick="closeMobile()">O nas</a>
   <a href="#szkolenia" onclick="closeMobile()">Szkolenia</a>
   <a href="#najblizsze" onclick="closeMobile()">Najbliższe</a>
-  <a href="#o-nas" onclick="closeMobile()">Misja</a>
+  <a href="#metoda" onclick="closeMobile()">Nasza Metoda</a>
   <a href="#hub" onclick="closeMobile()">Hub</a>
   <button class="btn-mobile" onclick="closeMobile();location.href='#kontakt'">Już wkrótce — zostaw kontakt</button>
 </div>
@@ -462,41 +475,49 @@ footer { background:var(--white); border-top:1px solid var(--slate-200); padding
   </div>
 </section>
 
-<!-- ════ O MNIE ════ -->
-<section id="o-mnie">
+<!-- ════ O NAS ════ -->
+<section id="o-nas-team">
   <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-photo-wrap reveal">
-        <div class="about-frame">
-          <div>
-            <div class="about-mono">SI</div>
-            <p class="about-photo-lbl">Twoje zdjęcie tutaj</p>
-          </div>
+    <div class="section-header">
+      <div class="section-eyebrow">Poznaj nas</div>
+      <h2>Dwóch praktyków. Jedna misja.<br><span class="hl">Wasz lokalny most do marketingu</span></h2>
+      <p>Sieć Innowacji nie jest korporacyjnym tworem ani przypadkowym zlepkiem trenerów. To my – dwoje ludzi, którzy od dwóch dekad zajmują się marketingiem, ale z dwóch różnych, uzupełniających się stron. Połączyła nas wspólna wiara, że lokalne firmy zasługują na taką samą wiedzę, jaką dysponują globalne marki.</p>
+    </div>
+
+    <div class="expert-grid">
+      <!-- JAKUB -->
+      <div class="expert-card reveal d1">
+        <h3>Jakub</h3>
+        <span class="headline">Strategia i szerokie horyzonty</span>
+        <p>„Facet, który prowadził marketing dla firm z 80 krajów, a teraz uczy lokalnych przedsiębiorców, jak robić to lepiej i taniej”. Jakub przeszedł przez wszystkie etapy branży – od agencji, przez e-commerce, po zarządzanie globalne.</p>
+        <div class="power">
+          <strong>Supermoc:</strong>
+          <p>Tłumaczenie zawiłych koncepcji na prosty język i budowanie systemów, które pracują, nawet gdy Ty śpisz.</p>
         </div>
-        <div class="about-pill">
-          <div class="big">20+</div>
-          <div class="sm">lat w<br>marketingu</div>
-        </div>
-      </div>
-      <div class="about-text">
-        <div class="section-eyebrow reveal">Twój prowadzący</div>
-        <h2 class="reveal d1">Marketingowiec z krwi i kości.<br><em>Praktyk, nie teoretyk.</em></h2>
-        <p class="reveal d2">Zaczynałem od własnego studia reklamy i fotografii. Przez lata w e-commerce i firmie produkcyjnej wysyłającej do ponad 80 krajów zbudowałem wiedzę, której nie ma w żadnym podręczniku.</p>
-        <p class="reveal d3">Teraz traktuję dzielenie się nią jako misję. Właściciele małych firm nie potrzebują drogiej agencji — potrzebują solidnych podstaw i odwagi, żeby zacząć.</p>
-        <div class="skill-cloud reveal d4">
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Fotografia</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Film &amp; CapCut</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>AI w biznesie</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Social Media</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/></svg>Canva &amp; grafika</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Płatne reklamy</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>SEO &amp; strony</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analityka</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Newslettery</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Automatyzacja</span>
-          <span class="skill-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>E-commerce</span>
+        <div class="power">
+          <strong>W czym Ci pomoże?</strong>
+          <p>Pokaże Ci, jak połączyć strategię, AI i analitykę w jedną całość, która faktycznie prowadzi do zysku.</p>
         </div>
       </div>
+
+      <!-- IRYNA -->
+      <div class="expert-card reveal d2">
+        <h3>Iryna</h3>
+        <span class="headline">Design i rzemiosło wizualne</span>
+        <p>„Kobieta, która przerobiła tysiące projektów graficznych, żebyś Ty mógł zrobić swój pierwszy projekt w 15 minut”. Iryna to mistrzyni wizualnego storytellingu z ponad 20-letnim stażem.</p>
+        <div class="power">
+          <strong>Supermoc:</strong>
+          <p>Sprawianie, że nawet osoba bez „oka” do designu zaczyna tworzyć treści, z których jest po prostu dumna.</p>
+        </div>
+        <div class="power">
+          <strong>W czym Ci pomoże?</strong>
+          <p>Nauczy Cię robić zdjęcia smartfonem, montować wideo w CapCut i okiełznać AI przy tworzeniu grafik.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:3rem;" class="reveal d3">
+      <p style="max-width:800px; margin:0 auto; font-size:0.95rem; color:var(--slate-500); line-height:1.75;">Mogliśmy dalej pracować dla globalnych klientów, ale wybraliśmy lokalność. Bo to tutaj bije prawdziwe serce gospodarki. Chcemy dzielić się wiedzą nie po to, by Was od nas uzależnić, ale by Was usamodzielnić.</p>
     </div>
   </div>
 </section>
@@ -612,34 +633,34 @@ footer { background:var(--white); border-top:1px solid var(--slate-200); padding
   </div>
 </section>
 
-<!-- ════ MISJA ════ -->
-<section id="o-nas">
+<!-- ════ NASZA METODA ════ -->
+<section id="metoda">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-eyebrow">Dlaczego to robię</div>
-      <h2>Marketing bez <span class="hl">bariery wejścia</span></h2>
-      <p>Małe firmy często rezygnują z marketingu, myśląc że to za drogie lub za trudne. Większość skutecznych działań można zrobić samemu — za darmo lub przy minimalnych kosztach. Wystarczy wiedzieć jak.</p>
+      <div class="section-eyebrow">Jak pracujemy</div>
+      <h2>Dwie perspektywy w <span class="hl">cenie jednej</span></h2>
+      <p>Nie prowadzimy osobnych szkoleń w oderwaniu od siebie. Kiedy Jakub mówi o strategii, Iryna za chwilę pokazuje, jak ją zrealizować w Canvie czy CapCut. Jesteśmy dla Was łącznikiem między pytaniem „co robić?” a odpowiedzią „jak to zrobić?”.</p>
     </div>
     <div class="pillars-grid">
       <div class="pillar-card reveal d1">
-        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <h3>Praktyczna wiedza od praktyka</h3>
-        <p>Żadnych teorii z podręcznika. Tylko to, co naprawdę działa — sprawdzone przez 20 lat realnej pracy w marketingu, od studia reklamowego po globalny e-commerce.</p>
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <h3>Metoda Quick Wins</h3>
+        <p>Krótkie, tematyczne szkolenia dają szybkie zwycięstwa. Już po pierwszym spotkaniu wychodzisz z czymś, co możesz wdrożyć tego samego dnia w swojej firmie.</p>
       </div>
       <div class="pillar-card reveal d2">
-        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-        <h3>Marketing za 0 zł jest możliwy</h3>
-        <p>Pokażę Ci jak osiągać widoczne efekty bez dużego budżetu, korzystając z darmowych narzędzi i sprytnych strategii, które każdy może wdrożyć natychmiast.</p>
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <h3>Praktyka ponad teorię</h3>
+        <p>Żadnych nudnych wykładów. Tylko to, co naprawdę działa — sprawdzone przez 40 lat łącznej pracy w marketingu i designie dla marek z całego świata.</p>
       </div>
       <div class="pillar-card reveal d3">
         <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3>Uczysz się, patrząc na innych</h3>
+        <h3>Wspólna analiza</h3>
         <p>Case studies uczestników, dyskusje grupowe, wspólna analiza — uczysz się też na przykładach firm z Twojej okolicy, co daje podwójną wartość każdego spotkania.</p>
       </div>
       <div class="pillar-card reveal d4">
-        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-        <h3>Widzisz efekty od razu</h3>
-        <p>Krótkie, tematyczne szkolenia dają szybkie zwycięstwa. Już po pierwszym spotkaniu wychodzisz z czymś, co możesz wdrożyć tego samego dnia w swojej firmie.</p>
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Most do nowoczesności</h3>
+        <p>Lokalne firmy zasługują na taką samą wiedzę o AI, strategii i designie, jaką dysponują globalne marki – podaną w prosty, praktyczny i ludzki sposób.</p>
       </div>
     </div>
   </div>
