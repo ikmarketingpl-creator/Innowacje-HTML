@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Szkolenia – Sieć Innowacji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brand:         #0A192F;
+  --brand-light:   #112240;
+  --accent:        #00B4D8;
+  --accent-bright: #64FFDA;
+  --white:         #ffffff;
+  --slate-50:      #f8fafc;
+  --slate-100:     #f1f5f9;
+  --slate-200:     #e2e8f0;
+  --slate-400:     #94a3b8;
+  --slate-500:     #64748b;
+  --slate-600:     #475569;
+  --slate-700:     #334155;
+  --slate-900:     #0f172a;
+  --font-h: 'Montserrat', sans-serif;
+  --font:   'Poppins', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--slate-50); color: var(--slate-900); overflow-x: hidden; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--slate-100); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp   { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulseDot { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+@keyframes badgePing { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4);} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0);} }
+@keyframes shimmer  { from{background-position:-200% center;} to{background-position:200% center;} }
+@keyframes revealFallback { to { opacity:1; transform:translateY(0); } }
+
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .55s ease, transform .55s ease; animation: revealFallback 0s 1.2s forwards; }
+.reveal.visible { opacity:1; transform:translateY(0); animation:none; }
+.d1{transition-delay:.08s;} .d2{transition-delay:.16s;} .d3{transition-delay:.24s;} .d4{transition-delay:.32s;}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:1.25rem 0; transition:all .3s;
+  background: rgba(10,25,47,0.0);
+}
+nav.scrolled {
+  background:rgba(8, 20, 40, 0.75);
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+  box-shadow:0 1px 0 rgba(0,180,216,.15), 0 4px 24px rgba(0,0,0,.25);
+  padding:.9rem 0;
+}
+nav.scrolled .nav-logo-text { color:var(--white) !important; }
+nav.scrolled .nav-back { color:rgba(255,255,255,.6); }
+nav.scrolled .hamburger span { background:var(--white); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+.nav-logo { display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+.nav-logo-icon { width:38px; height:38px; background:var(--brand); border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.nav-logo-icon svg { width:20px; height:20px; }
+.nav-logo-text { font-family:var(--font-h); font-weight:800; font-size:1rem; color:var(--white); letter-spacing:-.01em; transition:color .3s; }
+.nav-logo-text span { color:var(--accent); }
+nav.scrolled .nav-logo-text { color:var(--white); }
+.nav-right { display:flex; align-items:center; gap:1.5rem; }
+.nav-back { font-family:var(--font); font-size:.82rem; font-weight:500; color:rgba(255,255,255,.65); text-decoration:none; display:flex; align-items:center; gap:.4rem; transition:color .2s; }
+.nav-back svg { width:14px; height:14px; }
+.nav-back:hover { color:var(--accent) !important; }
+.btn-nav { background:var(--accent-bright); color:var(--brand); border:none; padding:.6rem 1.3rem; border-radius:100px; font-family:var(--font); font-size:.85rem; font-weight:600; cursor:pointer; transition:all .25s; text-decoration:none; white-space:nowrap; }
+.btn-nav:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(100,255,218,.4); }
+.hamburger { display:none; background:none; border:none; cursor:pointer; padding:.25rem; flex-direction:column; gap:5px; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--white); transition:all .3s; border-radius:2px; }
+
+/* ── HERO ── */
+.hero {
+  background:linear-gradient(160deg,#060f1e 0%,#0A192F 55%,#0d2240 100%);
+  padding:7rem 0 3.5rem; position:relative; overflow:hidden;
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(0,180,216,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 30%,transparent 100%);
+  pointer-events:none;
+}
+.hero-blob { position:absolute; top:-120px; right:-180px; width:600px; height:600px; background:radial-gradient(circle,rgba(0,180,216,.1) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.hero-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; position:relative; z-index:1; }
+.hero-eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem; border-radius:100px; background:rgba(0,180,216,.1); border:1px solid rgba(0,180,216,.25); color:var(--accent); font-family:var(--font); font-size:.75rem; font-weight:500; letter-spacing:.06em; margin-bottom:1.25rem; animation:fadeUp .5s ease both; }
+.hero-dot { width:7px; height:7px; background:var(--accent); border-radius:50%; box-shadow:0 0 8px var(--accent); animation:pulseDot 2s infinite; }
+.hero h1 { font-family:var(--font-h); font-size:clamp(2.2rem,5.5vw,4rem); font-weight:900; color:var(--white); line-height:1.1; letter-spacing:-.03em; margin-bottom:1rem; animation:fadeUp .5s .1s ease both; }
+.hero h1 .gt { background:linear-gradient(100deg,var(--accent) 0%,var(--accent-bright) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero-desc { font-family:var(--font); font-size:clamp(.95rem,1.8vw,1.05rem); font-weight:400; color:rgba(255,255,255,.72); line-height:1.8; max-width:540px; margin-bottom:2rem; animation:fadeUp .5s .18s ease both; }
+.hero-stats { display:flex; gap:2rem; flex-wrap:wrap; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,.08); animation:fadeUp .5s .28s ease both; }
+.stat-num { font-family:var(--font-h); font-size:1.9rem; font-weight:900; color:var(--accent-bright); line-height:1; letter-spacing:-.03em; }
+.stat-label { font-family:var(--font); font-size:.72rem; font-weight:400; color:rgba(255,255,255,.52); margin-top:3px; letter-spacing:.04em; }
+
+/* ── INNER WRAPPER ── */
+.page-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  padding:1.5rem 0 0;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+  margin-bottom:2rem;
+}
+.filter-label { font-family:var(--font); font-size:.8rem; font-weight:600; color:var(--slate-500); letter-spacing:.06em; text-transform:uppercase; }
+.filter-chips { display:flex; gap:.5rem; flex-wrap:wrap; }
+.fchip { padding:.4rem 1rem; border-radius:100px; font-family:var(--font); font-size:.8rem; font-weight:500; cursor:pointer; border:1px solid var(--slate-200); background:var(--white); color:var(--slate-600); transition:all .2s; }
+.fchip:hover { border-color:var(--accent); color:var(--accent); }
+.fchip.active { background:var(--brand); border-color:var(--brand); color:var(--white); }
+
+/* ── SECTION DIVIDER ── */
+.section-sep { display:flex; align-items:center; gap:1rem; margin:2.5rem 0 1.5rem; }
+.section-sep-line { flex:1; height:1px; background:var(--slate-200); }
+.section-sep-label { font-family:var(--font-h); font-size:.72rem; font-weight:700; color:var(--slate-400); letter-spacing:.14em; text-transform:uppercase; white-space:nowrap; }
+
+/* ── TRAINING CARDS ── */
+.cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+
+.tcard {
+  background:var(--white); border:1px solid var(--slate-200); border-radius:24px;
+  overflow:hidden; transition:all .3s ease; position:relative; display:flex; flex-direction:column;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);
+}
+.tcard:hover { border-color:rgba(0,180,216,.3); transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,180,216,.1); }
+.tcard.featured { border-color:rgba(0,180,216,.4); box-shadow:0 0 0 1px rgba(0,180,216,.15), 0 8px 32px rgba(0,180,216,.1); }
+.tcard.featured:hover { box-shadow:0 0 0 1px rgba(0,180,216,.3), 0 20px 60px rgba(0,180,216,.15); }
+
+.card-accent-bar { height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-bright)); transform:scaleX(0); transform-origin:left; transition:transform .4s ease; }
+.tcard:hover .card-accent-bar, .tcard.featured .card-accent-bar { transform:scaleX(1); }
+
+.feat-ribbon { position:absolute; top:1rem; right:1rem; background:#ef4444; color:#fff; font-family:var(--font); font-size:.63rem; font-weight:700; padding:3px 10px; border-radius:100px; letter-spacing:.08em; text-transform:uppercase; animation:badgePing 2.5s infinite; }
+
+.card-body { padding:1.5rem 1.5rem 1.25rem; flex:1; display:flex; flex-direction:column; }
+
+.card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem; gap:1rem; }
+.card-meta { display:flex; flex-direction:column; gap:.25rem; }
+.card-num { font-family:var(--font); font-size:.68rem; font-weight:600; color:var(--accent); letter-spacing:.14em; text-transform:uppercase; }
+.card-status-pill { display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .65rem; border-radius:100px; font-family:var(--font); font-size:.65rem; font-weight:600; letter-spacing:.06em; width:fit-content; }
+.card-status-pill.soon { background:rgba(0,180,216,.1); border:1px solid rgba(0,180,216,.2); color:var(--accent); }
+.card-status-pill.free { background:rgba(100,255,218,.12); border:1px solid rgba(100,255,218,.3); color:#059669; }
+.card-status-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+
+.card-ico { width:52px; height:52px; border-radius:14px; background:var(--slate-50); border:1px solid var(--slate-200); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .3s; }
+.card-ico svg { width:24px; height:24px; color:var(--accent); }
+.tcard:hover .card-ico { background:rgba(0,180,216,.08); border-color:rgba(0,180,216,.25); transform:scale(1.08) rotate(-4deg); }
+.tcard.featured .card-ico { background:rgba(0,180,216,.1); border-color:rgba(0,180,216,.3); }
+
+.card-body h3 { font-family:var(--font-h); font-size:1.05rem; font-weight:700; color:var(--brand); line-height:1.35; margin-bottom:.6rem; letter-spacing:-.01em; }
+.card-body p { font-family:var(--font); font-size:.875rem; font-weight:400; color:var(--slate-600); line-height:1.75; flex:1; }
+
+.card-chips { display:flex; gap:.45rem; flex-wrap:wrap; margin-top:1rem; }
+.cchip { display:flex; align-items:center; gap:4px; padding:.28rem .75rem; border-radius:100px; background:var(--slate-50); border:1px solid var(--slate-200); font-family:var(--font); font-size:.72rem; font-weight:500; color:var(--slate-600); }
+.cchip svg { width:11px; height:11px; color:var(--accent); flex-shrink:0; }
+
+/* WHAT YOU LEARN expandable */
+.card-learn { margin-top:1rem; padding-top:1rem; border-top:1px solid var(--slate-100); }
+.card-learn-title { font-family:var(--font); font-size:.72rem; font-weight:600; color:var(--slate-500); letter-spacing:.08em; text-transform:uppercase; margin-bottom:.6rem; }
+.card-learn ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
+.card-learn li { display:flex; align-items:flex-start; gap:.6rem; font-family:var(--font); font-size:.82rem; font-weight:400; color:var(--slate-600); line-height:1.5; }
+.card-learn li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:.38rem; }
+
+.card-foot { padding:.9rem 1.5rem 1.25rem; border-top:1px solid var(--slate-100); display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.cprice { font-family:var(--font-h); font-size:1rem; font-weight:700; color:var(--brand); }
+.cprice .free { color:#059669; }
+.cprice .soon { color:var(--accent); font-weight:500; font-size:.88rem; }
+.btn-card {
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.6rem 1.25rem; border-radius:100px;
+  background:var(--brand); color:var(--white); border:none;
+  font-family:var(--font); font-size:.8rem; font-weight:600;
+  text-decoration:none; cursor:pointer; transition:all .25s; white-space:nowrap;
+}
+.btn-card svg { width:13px; height:13px; transition:transform .2s; }
+.btn-card:hover { background:var(--brand-light); transform:translateY(-1px); box-shadow:0 6px 20px rgba(10,25,47,.2); }
+.btn-card:hover svg { transform:translateX(3px); }
+.tcard.featured .btn-card { background:var(--accent-bright); color:var(--brand); }
+.tcard.featured .btn-card:hover { background:#7fffd6; box-shadow:0 6px 20px rgba(100,255,218,.35); }
+
+/* ── UPCOMING TOPICS ── */
+.upcoming-box {
+  margin-top:2.5rem;
+  background:var(--white); border-radius:20px; border:1px solid var(--slate-200);
+  padding:1.75rem 2rem;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:2rem; flex-wrap:wrap;
+}
+.upcoming-box-left { flex:1; min-width:260px; }
+.upcoming-box-left p { font-family:var(--font); font-size:.82rem; color:var(--slate-500); margin-bottom:.85rem; font-weight:400; }
+.topic-chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+.tchip { display:flex; align-items:center; gap:5px; padding:.3rem .85rem; border-radius:100px; background:var(--slate-50); border:1px solid var(--slate-200); font-family:var(--font); font-size:.76rem; font-weight:400; color:var(--slate-600); transition:all .2s; }
+.tchip svg { width:11px; height:11px; color:var(--accent); flex-shrink:0; }
+.tchip:hover { background:rgba(0,180,216,.07); border-color:rgba(0,180,216,.3); color:var(--brand); }
+.upcoming-box-right { display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:.75rem; min-width:180px; }
+.upcoming-box-right p { font-family:var(--font); font-size:.8rem; color:var(--slate-400); text-align:right; }
+
+/* ── HOW IT WORKS ── */
+.how-section { padding:3rem 0; background:var(--brand); color:var(--white); }
+.how-header { text-align:center; margin-bottom:2rem; }
+.how-eyebrow { display:inline-flex; align-items:center; gap:.5rem; font-family:var(--font); font-size:.7rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-bright); margin-bottom:.75rem; }
+.how-eyebrow::before { content:''; display:inline-block; width:18px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent-bright)); border-radius:2px; }
+.how-header h2 { font-family:var(--font-h); font-size:clamp(1.6rem,3.5vw,2.2rem); font-weight:800; color:var(--white); letter-spacing:-.03em; line-height:1.15; }
+.how-header h2 span { background:linear-gradient(100deg,var(--accent),var(--accent-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.steps-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+.step { padding:1.5rem; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); position:relative; transition:all .3s; }
+.step:hover { background:rgba(0,180,216,.08); border-color:rgba(0,180,216,.25); transform:translateY(-4px); }
+.step-num { font-family:var(--font-h); font-size:2.5rem; font-weight:900; color:rgba(0,180,216,.18); line-height:1; letter-spacing:-.04em; margin-bottom:.75rem; }
+.step-ico { width:44px; height:44px; border-radius:12px; background:rgba(0,180,216,.1); border:1px solid rgba(0,180,216,.2); display:flex; align-items:center; justify-content:center; margin-bottom:.85rem; }
+.step-ico svg { width:22px; height:22px; color:var(--accent-bright); }
+.step h3 { font-family:var(--font-h); font-size:.95rem; font-weight:700; color:var(--white); margin-bottom:.5rem; letter-spacing:-.01em; }
+.step p { font-family:var(--font); font-size:.82rem; font-weight:400; color:rgba(255,255,255,.6); line-height:1.7; }
+.step-connector { position:absolute; top:2rem; right:-0.75rem; width:1.5rem; display:flex; align-items:center; justify-content:center; z-index:1; }
+.step-connector svg { width:16px; height:16px; color:rgba(0,180,216,.4); }
+
+/* ── CTA STRIP ── */
+.cta-strip { background:var(--slate-50); padding:2.5rem 0; }
+.cta-card { background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light) 100%); border-radius:24px; padding:2.5rem 3rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; position:relative; overflow:hidden; }
+.cta-card::before { content:''; position:absolute; top:-100px; right:-100px; width:400px; height:400px; background:radial-gradient(circle,rgba(0,180,216,.12) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.cta-text { position:relative; z-index:1; }
+.cta-text h2 { font-family:var(--font-h); font-size:clamp(1.4rem,3vw,1.9rem); font-weight:800; color:var(--white); letter-spacing:-.03em; line-height:1.2; margin-bottom:.5rem; }
+.cta-text p { font-family:var(--font); font-size:.9rem; font-weight:400; color:rgba(255,255,255,.65); line-height:1.7; }
+.cta-actions { display:flex; gap:1rem; flex-wrap:wrap; position:relative; z-index:1; }
+.btn-primary { display:inline-flex; align-items:center; gap:.5rem; background:var(--accent-bright); color:var(--brand); border:none; padding:.9rem 1.75rem; border-radius:100px; font-family:var(--font); font-size:.9rem; font-weight:700; cursor:pointer; transition:all .25s; text-decoration:none; white-space:nowrap; }
+.btn-primary:hover { background:#7fffd6; transform:translateY(-2px); box-shadow:0 10px 32px rgba(100,255,218,.4); }
+.btn-outline { display:inline-flex; align-items:center; gap:.5rem; background:transparent; color:rgba(255,255,255,.8); border:1px solid rgba(255,255,255,.25); padding:.9rem 1.75rem; border-radius:100px; font-family:var(--font); font-size:.9rem; font-weight:500; cursor:pointer; transition:all .25s; text-decoration:none; white-space:nowrap; }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+
+/* ── FOOTER ── */
+footer { background:var(--white); border-top:1px solid var(--slate-200); padding:1.75rem 0; }
+.footer-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem; }
+.footer-logo { display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+.footer-logo-ico { width:32px; height:32px; background:var(--brand); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.footer-logo-ico svg { width:18px; height:18px; }
+.footer-logo span { font-family:var(--font-h); font-weight:800; font-size:.95rem; color:var(--brand); letter-spacing:-.01em; }
+.footer-logo span em { color:var(--accent); font-style:normal; }
+.footer-copy { font-family:var(--font); font-size:.82rem; font-weight:300; color:var(--slate-400); }
+.footer-links { display:flex; gap:1.5rem; }
+.footer-links a { font-family:var(--font); font-size:.82rem; color:var(--slate-400); text-decoration:none; transition:color .2s; }
+.footer-links a:hover { color:var(--brand); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) { .cards-grid { grid-template-columns:1fr; } .steps-grid { grid-template-columns:repeat(2,1fr); } .step-connector { display:none; } }
+@media(max-width:768px) {
+  .hero { padding:5.5rem 0 2.5rem; }
+  .hamburger { display:flex; }
+  .nav-back { display:none; }
+  .cta-card { padding:2rem; }
+}
+@media(max-width:500px) { .steps-grid { grid-template-columns:1fr; } .cta-card { text-align:center; justify-content:center; } .cta-actions { justify-content:center; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#64FFDA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/><line x1="7" y1="19" x2="17" y2="19"/></svg>
+      </div>
+      <span class="nav-logo-text">Sieć <span>Innowacji</span></span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Strona główna
+      </a>
+      <a href="index.html#kontakt" class="btn-nav">Zostaw kontakt</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-blob"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Program szkoleń 2025</div>
+    <h1>Szkolenia marketingowe,<br>które <span class="gt">naprawdę działają</span></h1>
+    <p class="hero-desc">4 praktyczne warsztaty dla właścicieli małych firm — bez drogich agencji, bez teorii, tylko to co działa od zaraz. Każde szkolenie to gotowe narzędzia na następny dzień roboczy.</p>
+    <div class="hero-stats">
+      <div><div class="stat-num">4</div><div class="stat-label">szkolenia w programie</div></div>
+      <div><div class="stat-num">1–2h</div><div class="stat-label">czas każdego warsztatu</div></div>
+      <div><div class="stat-num">0 zł</div><div class="stat-label">pierwsze szkolenie</div></div>
+      <div><div class="stat-num">Q&amp;A</div><div class="stat-label">panel pytań po każdym</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SZKOLENIA -->
+<div style="background:var(--slate-50); padding:2.5rem 0 3rem;">
+  <div class="page-inner">
+
+    <div class="filter-bar">
+      <span class="filter-label">Filtruj:</span>
+      <div class="filter-chips">
+        <button class="fchip active" onclick="filterCards('all',this)">Wszystkie</button>
+        <button class="fchip" onclick="filterCards('soon',this)">Wkrótce</button>
+        <button class="fchip" onclick="filterCards('free',this)">Bezpłatne</button>
+      </div>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid">
+
+      <!-- #1 -->
+      <div class="tcard featured reveal d1" data-tags="soon free">
+        <div class="card-accent-bar"></div>
+        <span class="feat-ribbon">Już wkrótce</span>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-num">Szkolenie #1</span>
+              <span class="card-status-pill free"><span class="card-status-dot"></span>Bezpłatne</span>
+            </div>
+            <div class="card-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+          </div>
+          <h3>Fotografia produktowa smartfonem, która sprzedaje</h3>
+          <p>Zapomnij o drogich aparatach. Nauczysz się jak oświetlić produkt, ustawić kadr i edytować zdjęcie — używając tylko telefonu z kieszeni. Efekty widoczne gołym okiem od razu po powrocie do domu.</p>
+          <div class="card-learn">
+            <div class="card-learn-title">Czego się nauczysz</div>
+            <ul>
+              <li>Oświetlenie produktu bez sprzętu — z tym co masz w domu</li>
+              <li>Kompozycja i tło — jak sprawić żeby zdjęcie przyciągało wzrok</li>
+              <li>Edycja smartfonem w 5 minut — aplikacje, które robią różnicę</li>
+              <li>Zdjęcia do sklepu, social mediów i ulotek</li>
+            </ul>
+          </div>
+          <div class="card-chips">
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ok. 90 min</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Ćwiczenia live</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Panel Q&amp;A</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Telefon wystarczy</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="cprice"><span class="free">Bezpłatne</span></div>
+          <a href="index.html#kontakt" class="btn-card">Zostaw kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+      <!-- #2 -->
+      <div class="tcard reveal d2" data-tags="soon">
+        <div class="card-accent-bar"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-num">Szkolenie #2</span>
+              <span class="card-status-pill soon"><span class="card-status-dot"></span>Wkrótce</span>
+            </div>
+            <div class="card-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><circle cx="13.5" cy="17.5" r="2.5"/></svg>
+            </div>
+          </div>
+          <h3>Grafika w 5 minut za 0 zł — Canva i AI</h3>
+          <p>Masz już ładne zdjęcia — czas zrobić z nich profesjonalny post, ulotkę czy baner. Canva i generatory AI sprawią, że Twoja firma zacznie wyglądać jak duża marka bez zatrudniania grafika.</p>
+          <div class="card-learn">
+            <div class="card-learn-title">Czego się nauczysz</div>
+            <ul>
+              <li>Canva od zera — szablony, własne kolory i fonty marki</li>
+              <li>AI do grafiki: Midjourney, Adobe Firefly, Canva AI</li>
+              <li>Posty, ulotki, banery reklamowe — workflow w 5 minut</li>
+              <li>Spójny wygląd marki we wszystkich kanałach</li>
+            </ul>
+          </div>
+          <div class="card-chips">
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ok. 90 min</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/></svg>Canva + AI</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Panel Q&amp;A</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="cprice"><span class="soon">Wkrótce</span></div>
+          <a href="index.html#kontakt" class="btn-card">Zostaw kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+      <!-- #3 -->
+      <div class="tcard reveal d3" data-tags="soon">
+        <div class="card-accent-bar"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-num">Szkolenie #3</span>
+              <span class="card-status-pill soon"><span class="card-status-dot"></span>Wkrótce</span>
+            </div>
+            <div class="card-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+          </div>
+          <h3>Social Media bez ściemy — Facebook i Instagram dla zapracowanych</h3>
+          <p>Co publikować, kiedy i jak. Automatyzacje, kreatory treści i podstawy płatnych reklam po ludzku — żebyś nie tracił wieczorów na scrollowanie bez żadnego efektu dla firmy.</p>
+          <div class="card-learn">
+            <div class="card-learn-title">Czego się nauczysz</div>
+            <ul>
+              <li>Strategia treści: co, kiedy i jak często publikować</li>
+              <li>Meta Business Suite — planowanie i automatyzacja postów</li>
+              <li>Pierwsze kampanie reklamowe Facebook i Instagram Ads</li>
+              <li>Analityka: skąd wiedzieć co działa, a co przepala budżet</li>
+            </ul>
+          </div>
+          <div class="card-chips">
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ok. 2 godz.</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>FB + IG Ads</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Panel Q&amp;A</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="cprice"><span class="soon">Wkrótce</span></div>
+          <a href="index.html#kontakt" class="btn-card">Zostaw kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+      <!-- #4 -->
+      <div class="tcard reveal d4" data-tags="soon">
+        <div class="card-accent-bar"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-num">Szkolenie #4</span>
+              <span class="card-status-pill soon"><span class="card-status-dot"></span>Wkrótce</span>
+            </div>
+            <div class="card-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 4.42-2.87 8.17-6.84 9.5"/><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5"/><circle cx="12" cy="12" r="4"/></svg>
+            </div>
+          </div>
+          <h3>AI, które za Ciebie pisze i rysuje</h3>
+          <p>Gdy masz już podstawy, czas na turbo. ChatGPT, generatory grafik, automatyzacje — pokażę jak AI oszczędza kilkanaście godzin tygodniowo i robi za Ciebie treści, które zajmowały cały dzień.</p>
+          <div class="card-learn">
+            <div class="card-learn-title">Czego się nauczysz</div>
+            <ul>
+              <li>Prompty, które działają — ChatGPT do pisania treści firmy</li>
+              <li>AI do grafiki i wideo: szybkie generowanie materiałów</li>
+              <li>Automatyzacje marketingowe — Make.com i Zapier po ludzku</li>
+              <li>Które narzędzia AI są bezpłatne, które warte płacenia</li>
+            </ul>
+          </div>
+          <div class="card-chips">
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ok. 2 godz.</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Prompty live</span>
+            <span class="cchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Panel Q&amp;A</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="cprice"><span class="soon">Wkrótce</span></div>
+          <a href="index.html#kontakt" class="btn-card">Zostaw kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+    </div><!-- /cards-grid -->
+
+    <!-- UPCOMING TOPICS -->
+    <div class="upcoming-box reveal">
+      <div class="upcoming-box-left">
+        <div class="card-learn-title" style="margin-bottom:.7rem;">Kolejne tematy — dobierane do potrzeb grupy</div>
+        <p>Po pierwszych 4 szkoleniach program ewoluuje razem z uczestnikami. Tematy poniżej to propozycje — decydujecie Wy.</p>
+        <div class="topic-chips">
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Filmy CapCut</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Google Moja Firma</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>Strony www &amp; SEO</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Newslettery</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Google Ads</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analityka</span>
+          <span class="tchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>E-commerce</span>
+        </div>
+      </div>
+      <div class="upcoming-box-right">
+        <p>Masz pomysł na temat?<br>Napisz — dobieramy program do grupy.</p>
+        <a href="index.html#kontakt" class="btn-card">Zaproponuj temat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- JAK TO DZIAŁA -->
+<section class="how-section">
+  <div class="page-inner">
+    <div class="how-header">
+      <div class="how-eyebrow">Jak to działa</div>
+      <h2>Od zapisu do <span>gotowych umiejętności</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal d1">
+        <div class="step-num">01</div>
+        <div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <h3>Zostaw kontakt</h3>
+        <p>Wypełnij formularz. Odezwę się w ciągu 24h z datą, miejscem i wszystkimi szczegółami.</p>
+        <div class="step-connector"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">02</div>
+        <div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3>Otrzymujesz zaproszenie</h3>
+        <p>Przed szkoleniem dostaniesz maila z miejscem, godziną i krótką listą co warto mieć przy sobie.</p>
+        <div class="step-connector"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">03</div>
+        <div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Warsztaty na żywo</h3>
+        <p>1–2 godziny praktycznej pracy. Ćwiczenia na swoim telefonie, case study uczestników i panel Q&A.</p>
+        <div class="step-connector"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+      <div class="step reveal d4">
+        <div class="step-num">04</div>
+        <div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h3>Działasz od następnego dnia</h3>
+        <p>Wychodzisz z gotowymi materiałami i narzędziami. Dostęp do grupy uczestników i możliwość pytań po szkoleniu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="page-inner">
+    <div class="cta-card reveal">
+      <div class="cta-text">
+        <h2>Pierwsze szkolenie — bezpłatnie</h2>
+        <p>Nie ryzykujesz nic. Sprawdź metodę i zdecyduj czy kolejne szkolenia są dla Ciebie.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="index.html#kontakt" class="btn-primary">
+          Zapisuję się
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="index.html" class="btn-outline">
+          Dowiedz się więcej
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">
+      <div class="footer-logo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#64FFDA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/><line x1="7" y1="19" x2="17" y2="19"/></svg></div>
+      <span>Sieć <em>Innowacji</em></span>
+    </a>
+    <span class="footer-copy">&copy; 2025 siecinnowacji.pl &middot; Wszelkie prawa zastrzeżone.</span>
+    <div class="footer-links">
+      <a href="index.html">Strona główna</a>
+      <a href="regulamin.html">Regulamin</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV scroll */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+/* Reveal observer */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* Filter */
+function filterCards(tag, btn) {
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#cardsGrid .tcard').forEach(card => {
+    const tags = card.dataset.tags || '';
+    const show = tag === 'all' || tags.includes(tag);
+    card.style.display = show ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

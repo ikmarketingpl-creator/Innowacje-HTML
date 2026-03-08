@@ -1,0 +1,9 @@
+Wrzuć tutaj swoje zdjęcie profilowe.
+Sugerowany rozmiar: 800x1000px (proporcje 4:5), format JPG lub WebP.
+
+Następnie w pliku index.html znajdź sekcję #o-mnie i zamień:
+  <div class="about-mono">SI</div>
+  <p class="about-photo-lbl">Twoje zdjęcie tutaj</p>
+
+Na:
+  <img src="img/twoje-zdjecie.jpg" alt="[Twoje imię]" style="width:100%;height:100%;object-fit:cover;border-radius:24px;">
