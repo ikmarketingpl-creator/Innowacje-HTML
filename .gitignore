@@ -1,0 +1,23 @@
+# Pliki skompilowane
+*.class
+*.exe
+*.dll
+
+# Katalogi zależności
+node_modules/
+vendor/
+
+# Pliki konfiguracyjne IDE
+.vscode/
+.idea/
+*.swp
+
+# Pliki środowiskowe
+.env
+.env.local
+
+# Pliki tymczasowe
+*.log
+tmp/
+mail-config.php
+vendor/
