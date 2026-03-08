@@ -941,11 +941,16 @@ function handleSubmit() {
   }
   draw();
 })();
-  document.getElementById(id).addEventListener('input', function() {
-    this.classList.remove('field-error');
-    const a = document.getElementById('formAlert');
-    if (a.classList.contains('error')) a.className = 'form-alert';
-  });
+
+['f-name', 'f-firma', 'f-email', 'f-sz', 'f-msg'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', function() {
+      this.classList.remove('field-error');
+      const a = document.getElementById('formAlert');
+      if (a && a.classList.contains('error')) a.className = 'form-alert';
+    });
+  }
 });
 </script>
 </body>

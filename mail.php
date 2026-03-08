@@ -39,8 +39,7 @@ $message = clean($data['message'] ?? '');
 
 // ── Walidacja serwerowa (ochrona przed omijaniem JS) ──
 $errors = [];
-if (!$name)  $errors[] = 'Imię i nazwisko jest wymagane';
-if (!$firma) $errors[] = 'Nazwa firmy jest wymagana';
+// name i firma są opcjonalne, aby obsłużyć coming-soon.html
 if (!$email) $errors[] = 'Adres e-mail jest wymagany';
 if ($email && !filter_var($email, FILTER_VALIDATE_EMAIL))
     $errors[] = 'Niepoprawny format adresu e-mail';
@@ -52,14 +51,15 @@ if ($errors) {
 }
 
 // ── Treść maila ─────────────────────────────
-$subject = $SUBJECT_PFX . ' – ' . $name;
+$displayName = $name ?: ($firma ?: 'Zainteresowany');
+$subject = $SUBJECT_PFX . ' – ' . $displayName;
 
 $body  = "Nowe zgłoszenie z formularza kontaktowego na siecinnowacji.pl\n";
 $body .= str_repeat('─', 50) . "\n\n";
-$body .= "Imię i nazwisko : $name\n";
-$body .= "Firma           : $firma\n";
+$body .= "Imię i nazwisko : " . ($name ?: '(nie podano)') . "\n";
+$body .= "Firma           : " . ($firma ?: '(nie podano)') . "\n";
 $body .= "E-mail          : $email\n";
-$body .= "Szkolenie       : " . ($szkol ?: '(nie wybrano)') . "\n";
+$body .= "Szkolenie       : " . ($szkol ?: '(nie wybrano / coming soon)') . "\n";
 $body .= "\nWiadomość:\n$message\n";
 $body .= "\n" . str_repeat('─', 50) . "\n";
 $body .= "Wysłano: " . date('Y-m-d H:i:s') . "\n";
